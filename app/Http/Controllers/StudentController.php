@@ -50,6 +50,26 @@ class StudentController extends Controller
     }
 
 
+      /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+{
+    //Validate user input before saving
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:tbl_students,email',
+        'phone' => 'required|regex:/^[0-9]{8,15}$/', // Only numbers, 8-15 digits
+        'dob' => 'required|date_format:Y-m-d', // YYYY-MM-DD format
+        'college_id' => 'required|exists:tbl_colleges,id'
+    ]);
+
+    //Creating new student in database
+    Student::create($request->all());
+
+    //Redirect to student list with success message
+    return redirect()->route('students.index')->with('message', 'Student added!');
+}
 
 
 
