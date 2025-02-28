@@ -13,14 +13,18 @@ class StudentController extends Controller
      */
     public function index()
     {    //                                      if no college is selected, show all students
-        $colleges = College::pluck('name','id')->prepend('All Colleges', '');
+        $colleges = College::orderBy('name')->pluck('name','id')->prepend('All Colleges', '');
 
         if(request('college_id') == null){
-            $students = Student::all();
+            $students = Student::orderBy('name')->get();
         }else{
-            $students = Student::where('college_id', request('college_id'))->get();
+            $students = Student::where('college_id', request('college_id'))->orderBy('name')->get();
         }
-        return view('students.index', compact('students','colleges'));
+        return response()->json([
+            'students' => $students,
+            'colleges' => $colleges
+        ], 200);
+        //return view('students.index', compact('students','colleges'));
     }
 
     /**

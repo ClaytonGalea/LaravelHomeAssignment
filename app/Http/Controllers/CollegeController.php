@@ -37,6 +37,22 @@ class CollegeController extends Controller
         return view('colleges.edit', compact('college'));
     }
 
+     /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        // Validate college inputs
+        $request->validate([
+            'name' => 'required|string|max:255|unique:tbl_colleges,name',
+            'address' => 'required|string|max:255',
+        ]);
+
+        College::create($request->all());
+
+        return redirect()->route('colleges.index')->with('success', 'College added successfully!');
+    }
+
 
 
 
@@ -51,14 +67,7 @@ class CollegeController extends Controller
     //{
         //
     //}
-
-      /**
-     * Store a newly created resource in storage.
-     */
-    //public function store(Request $request)
-    //{
-        //
-    //}
+ 
     /**
      * Update the specified resource in storage.
      */
