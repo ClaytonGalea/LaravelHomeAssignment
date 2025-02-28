@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Student;
+use App\Models\College;
 
 class StudentController extends Controller
 {
@@ -10,8 +12,14 @@ class StudentController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
+    {    //                                      if no college is selected, show all students
+        $colleges = College::pluck('name','id')->prepend('All Colleges', '');
+
+        if(request('college_id') == null){
+            $students = students::all();
+        }else{
+            $students = Student::where('college_id', request('colleges'));
+        }
     }
 
     /**

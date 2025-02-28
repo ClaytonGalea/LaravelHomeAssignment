@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\College;
 
 class CollegeController extends Controller
 {
@@ -11,7 +12,9 @@ class CollegeController extends Controller
      */
     public function index()
     {
-        //
+        //List all the colleges
+        $colleges = College::all();
+        return view('colleges.index', compact('colleges'));
     }
 
     /**
@@ -19,7 +22,8 @@ class CollegeController extends Controller
      */
     public function create()
     {
-        //
+        //This will sjow the add college form
+        return view('colleges.create');
     }
 
     /**
@@ -27,8 +31,15 @@ class CollegeController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+       /* $request->validate([
+            'name'=> 'required|unique:tbl_colleges,name',
+            'address' => 'required'
+        ]);
+
+        College::create($request->all());
+
+        return redirect()->route('colleges.index')->with('message','College added successfully');
+    */}
 
     /**
      * Display the specified resource.
@@ -43,7 +54,9 @@ class CollegeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $college = College::findOrFail($id);
+        //This will show the edit form
+        return view('colleges.edit', compact('college'));
     }
 
     /**
