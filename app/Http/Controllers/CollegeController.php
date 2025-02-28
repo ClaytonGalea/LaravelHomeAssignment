@@ -14,7 +14,8 @@ class CollegeController extends Controller
     {
         //List all the colleges
         $colleges = College::all();
-        return view('colleges.index', compact('colleges'));
+        //return view('colleges.index', compact('colleges'));
+        return response()->json($colleges);
     }
 
     /**
@@ -22,31 +23,8 @@ class CollegeController extends Controller
      */
     public function create()
     {
-        //This will sjow the add college form
+        //This will show the add college form
         return view('colleges.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-       /* $request->validate([
-            'name'=> 'required|unique:tbl_colleges,name',
-            'address' => 'required'
-        ]);
-
-        College::create($request->all());
-
-        return redirect()->route('colleges.index')->with('message','College added successfully');
-    */}
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
     /**
@@ -59,19 +37,41 @@ class CollegeController extends Controller
         return view('colleges.edit', compact('college'));
     }
 
+
+
+
+
+
+
+
+     /**
+     * Display the specified resource.
+     */
+    //public function show(string $id)
+    //{
+        //
+    //}
+
+      /**
+     * Store a newly created resource in storage.
+     */
+    //public function store(Request $request)
+    //{
+        //
+    //}
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
+    //public function update(Request $request, string $id)
+    //{
         //
-    }
+    //}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
+    //public function destroy(string $id)
+    //{
         //
-    }
+    //}
 }

@@ -16,10 +16,11 @@ class StudentController extends Controller
         $colleges = College::pluck('name','id')->prepend('All Colleges', '');
 
         if(request('college_id') == null){
-            $students = students::all();
+            $students = Student::all();
         }else{
-            $students = Student::where('college_id', request('colleges'));
+            $students = Student::where('college_id', request('college_id'))->get();
         }
+        return view('students.index', compact('students','colleges'));
     }
 
     /**
@@ -27,39 +28,16 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        $colleges = College::pluck('name', 'id');
+        return view('students.create', compact('colleges'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
-        //
-    }
+        $student = Student::findOrFail($id);
+        $colleges = College::pluck('name', 'id');
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
+        return view('students.edit',compact('student','colleges'));
     }
 
     /**
@@ -67,6 +45,54 @@ class StudentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Student::destroy($id);
+        return redirect()->route('students.index')->with('message','Student deleted successfully!');
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Store a newly created resource in storage.
+     */
+   // public function store(Request $request)
+    //{
+        //
+    //}
+
+    /**
+     * Display the specified resource.
+     */
+    //public function show(string $id)
+    //{
+        //
+    //}
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+   
+
+    /**
+     * Update the specified resource in storage.
+     */
+    //public function update(Request $request, string $id)
+    //{
+        //
+    //}
+
+ 
 }
