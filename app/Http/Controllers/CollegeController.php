@@ -14,8 +14,7 @@ class CollegeController extends Controller
     {
         //List all the colleges
         $colleges = College::all();
-        //return view('colleges.index', compact('colleges'));
-        return response()->json($colleges);
+        return view('colleges.index', compact('colleges'));
     }
 
     /**

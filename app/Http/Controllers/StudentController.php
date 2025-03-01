@@ -12,19 +12,27 @@ class StudentController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {    //                                      if no college is selected, show all students
+    {    /*
+         1) Order colleges by name    
+         2) Pluck - Show id first then name 
+         3) prepend - The default will be All Colleges and will display all students 
+        */                                 
         $colleges = College::orderBy('name')->pluck('name','id')->prepend('All Colleges', '');
 
+        /*
+        1) Rquest gets the selected value from the drop down menu
+        2) If no college is selected, it will show all the students
+        3) Else show the students with the corresponding college id selected, and order them by name
+        */
         if(request('college_id') == null){
             $students = Student::orderBy('name')->get();
         }else{
             $students = Student::where('college_id', request('college_id'))->orderBy('name')->get();
         }
-        return response()->json([
-            'students' => $students,
-            'colleges' => $colleges
-        ], 200);
-        //return view('students.index', compact('students','colleges'));
+      
+        //Loads the students.index.blade.php view
+        //compact is creating an array where students = $students and colleges = $colleges
+        return view('students.index', compact('students','colleges'));
     }
 
     /**
