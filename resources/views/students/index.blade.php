@@ -39,6 +39,7 @@
                         <td>
                             <a href="{{ route('students.edit', $student->id) }}" class="btn btn-warning btn-sm">Edit</a>
                             <form action="{{ route('students.destroy', $student->id) }}" method="POST" style="display:inline;">
+                                <!--prevents malicious attacks by ensuring that the request is coming from your application.-->
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>

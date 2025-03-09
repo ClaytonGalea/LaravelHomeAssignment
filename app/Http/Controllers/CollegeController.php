@@ -41,7 +41,7 @@ class CollegeController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate college inputs
+        // Validating college inputs
         $request->validate([
             'name' => 'required|string|max:255|unique:tbl_colleges,name',
             'address' => 'required|string|max:255',
@@ -67,19 +67,45 @@ class CollegeController extends Controller
         //
     //}
  
-    /**
-     * Update the specified resource in storage.
-     */
-    //public function update(Request $request, string $id)
-    //{
-        //
-    //}
+   /**
+ * Update the specified college in storage.
+ */
+public function update(Request $request, string $id)
+{
+    // Validate user input before updating
+    $request->validate([
+        'name' => 'required|string|max:255|unique:tbl_colleges,name,' . $id,
+        'address' => 'required|string|max:255',
+    ]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    //public function destroy(string $id)
-    //{
-        //
-    //}
+    // Find the college record
+    $college = College::findOrFail($id);
+
+    // Update the college details
+    $college->update($request->all());
+
+    // Redirect to college list with success message
+    return redirect()->route('colleges.index')->with('message', 'College updated successfully!');
+}
+
+/**
+ * Remove the specified college from the list
+ */
+public function destroy(string $id)
+{
+    // Find the college record
+    $college = College::findOrFail($id);
+
+    // Check if the college has any students before deleting, if there is display a message
+    if ($college->students()->count() > 0) {
+        return redirect()->route('colleges.index')->with('error', 'Cannot delete a college that has students.');
+    }
+
+    // Delete the college
+    $college->delete();
+
+    // Redirect to college list with sucess message
+    return redirect()->route('colleges.index')->with('message', 'College deleted successfully!');
+}
+
 }

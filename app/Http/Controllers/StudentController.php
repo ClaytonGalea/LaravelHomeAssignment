@@ -40,7 +40,19 @@ class StudentController extends Controller
      */
     public function create()
     {
+        //Fetches all colleges from databse id first then name
         $colleges = College::pluck('name', 'id');
+
+        //Loads students.create view
+        //compact is like creating this array:
+        /*
+        [
+            'colleges' => [
+                1 => "Mcast Gozo Campus",
+                2 => "Mcast Paola"
+            ]   
+        ]
+        */ 
         return view('students.create', compact('colleges'));
     }
 
@@ -57,7 +69,9 @@ class StudentController extends Controller
      */
     public function destroy(string $id)
     {
+        //Destory the student with that id
         Student::destroy($id);
+        //redirect to student index page with a message "student deleted successfully"
         return redirect()->route('students.index')->with('message','Student deleted successfully!');
     }
 
@@ -67,14 +81,18 @@ class StudentController extends Controller
      */
     public function store(Request $request)
 {
+    $messages = [
+        'phone.regex' => 'Phone number must be between 8-15 digits.',
+        'email.unique' => 'This email is already registered.',
+    ];
     //Validate user input before saving
     $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|email|unique:tbl_students,email',
         'phone' => 'required|regex:/^[0-9]{8,15}$/', // Only numbers, 8-15 digits
-        'dob' => 'required|date_format:Y-m-d', // YYYY-MM-DD format
+        'dob' => 'required|date_format:Y-m-d', // YYYY-MM-DD 
         'college_id' => 'required|exists:tbl_colleges,id'
-    ]);
+    ],$messages);
 
     //Creating new student in database
     Student::create($request->all());
@@ -83,7 +101,30 @@ class StudentController extends Controller
     return redirect()->route('students.index')->with('message', 'Student added!');
 }
 
+public function update(Request $request, string $id)
+{
+    $messages = [
+        'phone.regex' => 'Phone number must be between 8-15 digits.',
+        'email.unique' => 'This email is already registered.',
+    ];
+    // Validate user input before updating
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:tbl_students,email,' . $id,
+        'phone' => 'required|regex:/^[0-9]{8,15}$/', // Only numbers, 8-15 digits
+        'dob' => 'required|date_format:Y-m-d', // YYYY-MM-DD format
+        'college_id' => 'required|exists:tbl_colleges,id'
+    ],$messages);
 
+    // Find the student record
+    $student = Student::findOrFail($id);
+
+    // Update the student details
+    $student->update($request->all());
+
+    // Redirect to student list with success message
+    return redirect()->route('students.index')->with('message', 'Student updated successfully!');
+}
 
 
 
@@ -121,10 +162,6 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    //public function update(Request $request, string $id)
-    //{
-        //
-    //}
-
+   
  
 }
