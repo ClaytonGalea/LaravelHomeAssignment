@@ -16,7 +16,10 @@ class StudentController extends Controller
          1) Order colleges by name    
          2) Pluck - Show id first then name 
          3) prepend - The default will be All Colleges and will display all students 
-        */                                 
+        */          
+        
+        $sortOrder = request('sort', 'asc');
+
         $colleges = College::orderBy('name')->pluck('name','id')->prepend('All Colleges', '');
 
         /*
@@ -29,10 +32,9 @@ class StudentController extends Controller
         }else{
             $students = Student::where('college_id', request('college_id'))->orderBy('name')->get();
         }
-      
+
         //Loads the students.index.blade.php view
-        //compact is creating an array where students = $students and colleges = $colleges
-        return view('students.index', compact('students','colleges'));
+        return view('students.index', compact('students','colleges','sortOrder'));
     }
 
     /**

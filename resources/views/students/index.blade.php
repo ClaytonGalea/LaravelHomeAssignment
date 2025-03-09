@@ -17,6 +17,9 @@
 
         <a href="{{ route('students.create') }}" class="btn btn-primary">Add New Student</a>
 
+         {{-- Sorting Component --}}
+         @include('students._sort')
+
         <table class="table mt-3">
             <thead>
                 <tr>
