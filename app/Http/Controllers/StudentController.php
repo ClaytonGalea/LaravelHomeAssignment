@@ -84,88 +84,49 @@ class StudentController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $messages = [
-        'phone.regex' => 'Phone number must be between 8-15 digits.',
-        'email.unique' => 'This email is already registered.',
-    ];
-    //Validate user input before saving
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:tbl_students,email',
-        'phone' => 'required|regex:/^[0-9]{8,15}$/', // Only numbers, 8-15 digits
-        'dob' => 'required|date_format:Y-m-d', // YYYY-MM-DD 
-        'college_id' => 'required|exists:tbl_colleges,id'
-    ],$messages);
+    {
+        $messages = [
+            'phone.regex' => 'Phone number must be between 8-15 digits.',
+            'email.unique' => 'This email is already registered.',
+        ];
+        //Validate user input before saving
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:tbl_students,email',
+            'phone' => 'required|regex:/^[0-9]{8,15}$/', // Only numbers, 8-15 digits
+            'dob' => 'required|date_format:Y-m-d', // YYYY-MM-DD 
+            'college_id' => 'required|exists:tbl_colleges,id'
+        ],$messages);
 
-    //Creating new student in database
-    Student::create($request->all());
+        //Creating new student in database
+        Student::create($request->all());
 
-    //Redirect to student list with success message
-    return redirect()->route('students.index')->with('success', 'Student added!');
-}
+        //Redirect to student list with success message
+        return redirect()->route('students.index')->with('success', 'Student added!');
+    }
 
-public function update(Request $request, string $id)
-{
-    $messages = [
-        'phone.regex' => 'Phone number must be between 8-15 digits.',
-        'email.unique' => 'This email is already registered.',
-    ];
-    // Validate user input before updating
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:tbl_students,email,' . $id,
-        'phone' => 'required|regex:/^[0-9]{8,15}$/', // Only numbers, 8-15 digits
-        'dob' => 'required|date_format:Y-m-d', // YYYY-MM-DD format
-        'college_id' => 'required|exists:tbl_colleges,id'
-    ],$messages);
+    public function update(Request $request, string $id)
+    {
+        $messages = [
+            'phone.regex' => 'Phone number must be between 8-15 digits.',
+            'email.unique' => 'This email is already registered.',
+        ];
+        // Validate user input before updating
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:tbl_students,email,' . $id,
+            'phone' => 'required|regex:/^[0-9]{8,15}$/', // Only numbers, 8-15 digits
+            'dob' => 'required|date_format:Y-m-d', // YYYY-MM-DD format
+            'college_id' => 'required|exists:tbl_colleges,id'
+        ],$messages);
 
-    // Find the student record
-    $student = Student::findOrFail($id);
+        // Find the student record
+        $student = Student::findOrFail($id);
 
-    // Update the student details
-    $student->update($request->all());
+        // Update the student details
+        $student->update($request->all());
 
-    // Redirect to student list with success message
-    return redirect()->route('students.index')->with('success', 'Student updated successfully!');
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * Store a newly created resource in storage.
-     */
-   // public function store(Request $request)
-    //{
-        //
-    //}
-
-    /**
-     * Display the specified resource.
-     */
-    //public function show(string $id)
-    //{
-        //
-    //}
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-   
-
-    /**
-     * Update the specified resource in storage.
-     */
-   
- 
+        // Redirect to student list with success message
+        return redirect()->route('students.index')->with('success', 'Student updated successfully!');
+    }
 }
