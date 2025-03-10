@@ -3,6 +3,13 @@
 @section('title', 'Colleges')
 
 @section('content')
+{{-- Display error messages --}}
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
     <div class="container">
         <h2>Colleges</h2>
         <a href="{{ route('colleges.create') }}" class="btn btn-primary">Add New College</a>

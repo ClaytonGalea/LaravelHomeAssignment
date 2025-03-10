@@ -15,6 +15,8 @@
         </div>
     @endif
 
+   
+
     <form action="{{ route('colleges.store') }}" method="POST">
         @include('colleges._form', ['buttonText' => 'Add College'])
     </form>

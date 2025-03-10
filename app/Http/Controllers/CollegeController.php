@@ -85,7 +85,7 @@ public function update(Request $request, string $id)
     $college->update($request->all());
 
     // Redirect to college list with success message
-    return redirect()->route('colleges.index')->with('message', 'College updated successfully!');
+    return redirect()->route('colleges.index')->with('success', 'College updated successfully!');
 }
 
 /**
@@ -105,7 +105,7 @@ public function destroy(string $id)
     $college->delete();
 
     // Redirect to college list with sucess message
-    return redirect()->route('colleges.index')->with('message', 'College deleted successfully!');
+    return redirect()->route('colleges.index')->with('success', 'College deleted successfully!');
 }
 
 }

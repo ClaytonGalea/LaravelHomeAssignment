@@ -28,14 +28,16 @@ class StudentController extends Controller
         3) Else show the students with the corresponding college id selected, and order them by name
         */
         if(request('college_id') == null){
-            $students = Student::orderBy('name')->get();
+            $students = Student::orderBy('name',$sortOrder)->get();
         }else{
-            $students = Student::where('college_id', request('college_id'))->orderBy('name')->get();
+            $students = Student::where('college_id', request('college_id'))->orderBy('name',$sortOrder)->get();
         }
 
         //Loads the students.index.blade.php view
         return view('students.index', compact('students','colleges','sortOrder'));
     }
+ 
+
 
     /**
      * Show the form for creating a new resource.
@@ -74,7 +76,7 @@ class StudentController extends Controller
         //Destory the student with that id
         Student::destroy($id);
         //redirect to student index page with a message "student deleted successfully"
-        return redirect()->route('students.index')->with('message','Student deleted successfully!');
+        return redirect()->route('students.index')->with('success','Student deleted successfully!');
     }
 
 
@@ -100,7 +102,7 @@ class StudentController extends Controller
     Student::create($request->all());
 
     //Redirect to student list with success message
-    return redirect()->route('students.index')->with('message', 'Student added!');
+    return redirect()->route('students.index')->with('success', 'Student added!');
 }
 
 public function update(Request $request, string $id)
@@ -125,7 +127,7 @@ public function update(Request $request, string $id)
     $student->update($request->all());
 
     // Redirect to student list with success message
-    return redirect()->route('students.index')->with('message', 'Student updated successfully!');
+    return redirect()->route('students.index')->with('success', 'Student updated successfully!');
 }
 
 
